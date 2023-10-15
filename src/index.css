@@ -1,0 +1,19 @@
+.draw-root {
+  position: relative;
+}
+
+.draw-root > div {
+  transition: opacity 0.5s;
+}
+
+.draw-root > .curr-code {
+  opacity: 1;
+}
+
+.draw-root > .fade {
+  opacity: 0;
+}
+
+.dimed-code {
+  color: #cccccc;
+}
