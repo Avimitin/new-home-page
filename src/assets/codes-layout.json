@@ -1,0 +1,10 @@
+{
+  "javascript": {
+    "file": "hello.js",
+    "bg": "#cbcb41"
+  },
+  "rust": {
+    "file": "hello.rs",
+    "bg": "#dea584"
+  }
+}

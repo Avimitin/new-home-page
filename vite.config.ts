@@ -4,5 +4,5 @@ import { code_transform } from "./vite-transform-plugin"
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), code_transform("./src/assets")],
+  plugins: [react(), code_transform("./src/assets/codes-layout.json")],
 })

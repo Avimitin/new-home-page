@@ -1,6 +1,7 @@
 import fs from "node:fs";
+import { dirname } from "node:path";
 
-export function code_transform (dir: string) {
+export function code_transform(layoutFile: string) {
   return {
     name: 'code-transform',
     resolveId(id: string) {
@@ -9,25 +10,21 @@ export function code_transform (dir: string) {
       }
     },
 
-    async load (id: string) {
+    async load(id: string) {
       if (!id.match(/hello-codes/)) {
         return
       }
 
-      const allFiles = fs.readdirSync(dir).filter(p => p.startsWith("hello"))
-      if (allFiles.length === 0) {
-        console.warn(`No code file found from ${dir}, this is weird`);
-        return
+      interface CodeLayoutData {
+        file: string,
+        bg: string,
       }
 
-      const ext2lang = {
-        "rs": "rust",
-        "ts": "typescript",
-        "js": "javascript",
-      };
+      const codeLayout: Record<string, CodeLayoutData> = JSON.parse(fs.readFileSync(layoutFile, "utf-8"))
+      const dir = dirname(layoutFile)
 
-      const result = allFiles.map(file => {
-        const rawStr = fs.readFileSync(`${dir}/${file}`, "utf-8");
+      const result = Object.entries(codeLayout).map(([lang, data]) => {
+        const rawStr = fs.readFileSync(`${dir}/${data.file}`, "utf-8");
         const pattern = "Hello, here is sh1marin."
 
         const lineNum = rawStr.split("\n").findIndex((orig) => orig.includes(pattern))
@@ -35,12 +32,12 @@ export function code_transform (dir: string) {
         const linesBelow = rawStr.split("\n").slice(lineNum + 1)
         const matchedLine = rawStr.split("\n").at(lineNum)
 
-        const ext = file.split(".").at(1)
         return {
-          lang: ext2lang[ext],
+          lang,
           matchedLine,
           linesAbove,
           linesBelow,
+          bg: data.bg,
         }
       })
 
