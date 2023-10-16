@@ -31,11 +31,14 @@ pre {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  -webkit-transition: background-color 0.5s linear;
+  -ms-transition: background-color 0.5s linear;
+  transition: background-color 0.5s linear;
 }
 
 .code-container {
   width: 75%;
-  border: 2px solid;
 
   display: flex;
   align-items: center;
@@ -47,6 +50,7 @@ pre {
 .code-container pre[class^="lang-"] {
   font-family: monospace;
   font-size: 4vw;
+  color: #FFFFFF;
 }
 
 .display .code-container {
