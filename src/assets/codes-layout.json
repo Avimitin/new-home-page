@@ -6,5 +6,17 @@
   "rust": {
     "file": "hello.rs",
     "bg": "#dea584"
+  },
+  "haskell": {
+    "file": "hello.hs",
+    "bg": "#a074c4"
+  },
+  "ruby": {
+    "file": "hello.rb",
+    "bg": "#701516"
+  },
+  "scala": {
+    "file": "hello.scala",
+    "bg": "#cc3e44"
   }
 }
