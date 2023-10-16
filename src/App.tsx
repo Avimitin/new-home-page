@@ -5,25 +5,27 @@ import "./index.css"
 function DimedCodePart(data: { code: string }) {
   const { code } = data;
 
-  return <div className='dimed-code'>
+  return (<div className="dimed-code">
     <span>{code}</span>
-  </div>
+  </div>)
 }
 
 function HighlightedCodePart(data: { code: string }) {
   const { code } = data;
 
-  return <div className='highlighted-code'>
+  return (<div className='highlighted-code'>
     <span>{code}</span>
-  </div>
+  </div>)
 }
 
 function CodeBanner({ lang, linesAbove, matchedLine, linesBelow }: CodeInfo) {
   return (
     <div className={`lang-${lang}`}>
-      <DimedCodePart code={linesAbove.join("\n")} />
-      <HighlightedCodePart code={matchedLine} />
-      <DimedCodePart code={linesBelow.join("\n")} />
+      <pre>
+        <DimedCodePart code={linesAbove.join("\n")} />
+        <HighlightedCodePart code={matchedLine} />
+        <DimedCodePart code={linesBelow.join("\n")} />
+      </pre>
     </div>
   )
 }

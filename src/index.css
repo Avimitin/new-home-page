@@ -5,6 +5,10 @@ body {
   height: 100vh;
 }
 
+pre {
+  margin: 0%;
+}
+
 #root {
   height: 100%;
   width: 100%;
@@ -28,6 +32,8 @@ body {
 
 .draw-root div[class^="lang-"] {
   transition: opacity 0.5s;
+  font-family: monospace;
+  font-size: 3rem;
 }
 
 .draw-root .display div[class^="lang-"] {
