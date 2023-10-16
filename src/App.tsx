@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import allCodes, { CodeStructure } from "hello-codes"
+import allCodes, { CodeInfo } from "hello-codes"
 import "./index.css"
 
 function DimedCodePart(data: { code: string }) {
@@ -18,13 +18,19 @@ function HighlightedCodePart(data: { code: string }) {
   </div>
 }
 
-function CodeBanner({ lang, linesAbove, matchedLine, linesBelow  }: CodeStructure) {
-  return <div className={`code-background-${lang}`}>
-    <div className='code'>
+function CodeBanner({ lang, linesAbove, matchedLine, linesBelow }: CodeInfo) {
+  return (
+    <div className={`lang-${lang}`}>
       <DimedCodePart code={linesAbove.join("\n")} />
       <HighlightedCodePart code={matchedLine} />
       <DimedCodePart code={linesBelow.join("\n")} />
     </div>
+  )
+}
+
+function CodeBackground({ codeInfo }: { codeInfo: CodeInfo }) {
+  return <div className="code-background" style={{ backgroundColor: codeInfo.bg }}>
+    <CodeBanner {...codeInfo} />
   </div>
 }
 
@@ -50,13 +56,17 @@ function DrawRoot() {
     setDoFade(false);
   }
   if (prevCodes && doFade) {
-    return <div className="fade" onTransitionEnd={onTransitionEnd}>
-      <CodeBanner {...prevCodes} />
-    </div>
+    return (
+      <div className="fade" onTransitionEnd={onTransitionEnd}>
+        <CodeBackground codeInfo={prevCodes} />
+      </div>
+    )
   }
 
   const currentCodes = allCodes[current];
-  return <div className="curr-code"><CodeBanner {...currentCodes}/></div>
+  return (<div className="display">
+    <CodeBackground codeInfo={currentCodes} />
+  </div>)
 }
 
 function App() {

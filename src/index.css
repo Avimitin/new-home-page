@@ -2,15 +2,15 @@
   position: relative;
 }
 
-.draw-root > div {
+.draw-root div[class^="lang-"] {
   transition: opacity 0.5s;
 }
 
-.draw-root > .curr-code {
+.draw-root .display div[class^="lang-"] {
   opacity: 1;
 }
 
-.draw-root > .fade {
+.draw-root .fade div[class^="lang-"] {
   opacity: 0;
 }
 
