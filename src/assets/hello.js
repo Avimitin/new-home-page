@@ -1,3 +1,3 @@
-
-console.log("Hello, here is sh1marin.")
-
+(async () => {
+  console.log("%ANCHOR%");
+})();
