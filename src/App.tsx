@@ -20,8 +20,8 @@ function HighlightedCodePart(data: { code: string }) {
 
 function CodeBanner({ lang, linesAbove, matchedLine, linesBelow }: CodeInfo) {
   return (
-    <div className={`lang-${lang}`}>
-      <pre>
+    <div className='code-container'>
+      <pre className={`lang-${lang}`}>
         <DimedCodePart code={linesAbove.join("\n")} />
         <HighlightedCodePart code={matchedLine} />
         <DimedCodePart code={linesBelow.join("\n")} />

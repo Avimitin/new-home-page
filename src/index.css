@@ -28,19 +28,32 @@ pre {
 .code-background {
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.draw-root div[class^="lang-"] {
+.code-container {
+  width: 75%;
+  border: 2px solid;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   transition: opacity 0.5s;
-  font-family: monospace;
-  font-size: 3rem;
 }
 
-.draw-root .display div[class^="lang-"] {
+.code-container pre[class^="lang-"] {
+  font-family: monospace;
+  font-size: 4vw;
+}
+
+.display .code-container {
   opacity: 1;
 }
 
-.draw-root .fade div[class^="lang-"] {
+.fade .code-container {
   opacity: 0;
 }
 
