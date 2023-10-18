@@ -55,8 +55,6 @@ pre {
   align-items: center;
   justify-content: center;
 
-  transition: opacity 1s;
-
   padding-top: 2vw;
 
   height: 70vh;
@@ -69,16 +67,18 @@ pre {
   box-shadow: 0px 0px 10px rgb(17, 25, 40);
 }
 
-.code-container pre[class^="lang-"] {
+.code-source {
   font-family: monospace;
   font-size: 4vw;
+
+  transition: opacity 1s;
 }
 
-.display .code-container {
+.code-source.display {
   opacity: 1;
 }
 
-.fade .code-container {
+.code-source.fading {
   opacity: 0;
 }
 

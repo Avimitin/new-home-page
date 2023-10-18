@@ -23,18 +23,20 @@ function HighlightedCodePart(data: { code: string }) {
 
 interface CodeContainerOpt {
   codeInfo: CodeInfo
-  onTransitionEnd: React.TransitionEventHandler<HTMLDivElement> | undefined,
+  onTransitionEnd?: React.TransitionEventHandler<HTMLDivElement>,
 }
 
 function CodeContainer({ codeInfo, onTransitionEnd }: CodeContainerOpt) {
   const { lang, linesAbove, matchedLine, linesBelow } = codeInfo;
   return (
-    <div className={`code-container ${onTransitionEnd ? "fading" : "display"}`} onTransitionEnd={onTransitionEnd}>
-      <pre className={`lang-${lang}`}>
-        <DimedCodePart code={linesAbove.join("\n")} />
-        <HighlightedCodePart code={matchedLine} />
-        <DimedCodePart code={linesBelow.join("\n")} />
-      </pre>
+    <div className={`code-container lang-${lang}`}>
+      <div className={`code-source ${onTransitionEnd ? "fading" : "display"}`} onTransitionEnd={onTransitionEnd}>
+        <pre>
+          <DimedCodePart code={linesAbove.join("\n")} />
+          <HighlightedCodePart code={matchedLine} />
+          <DimedCodePart code={linesBelow.join("\n")} />
+        </pre>
+      </div>
     </div>
   )
 }
@@ -91,14 +93,13 @@ function DrawRoot() {
 
   const prevCodes = allCodes[prev];
   if (prevCodes && doFade) {
-    <CodeBackground codeInfo={prevCodes} onTransitionEnd={onTransitionEnd}/>
+    return (<CodeBackground codeInfo={prevCodes} onTransitionEnd={onTransitionEnd}/>)
   }
 
   const currentCodes = allCodes[current];
-  return (<div className="display">
-    <CodeBackground codeInfo={currentCodes} onTransitionEnd={undefined} />
-  </div>)
-
+  return (
+    <CodeBackground codeInfo={currentCodes} />
+  )
 
 }
 
