@@ -21,12 +21,12 @@ function HighlightedCodePart(data: { code: string }) {
   </div>)
 }
 
-interface CodeContainerOpt {
+interface CodeContainerProps {
   codeInfo: CodeInfo
   onTransitionEnd?: React.TransitionEventHandler<HTMLDivElement>,
 }
 
-function CodeContainer({ codeInfo, onTransitionEnd }: CodeContainerOpt) {
+function CodeContainer({ codeInfo, onTransitionEnd }: CodeContainerProps) {
   const { lang, linesAbove, matchedLine, linesBelow } = codeInfo;
   return (
     <div className={`code-container lang-${lang}`}>
@@ -41,12 +41,12 @@ function CodeContainer({ codeInfo, onTransitionEnd }: CodeContainerOpt) {
   )
 }
 
-function randRadialGradientGroup(bg: string, amount: number): string {
+function randRadialGradientGroup(currentBg: string, nextBg: string, amount: number): string {
   const rand = () => {
     return Math.floor(Math.random() * 100);
   }
   return chroma
-    .scale([chroma(bg).darken(2), chroma.random()])
+    .scale([chroma(currentBg), chroma.random(), chroma(nextBg)])
     .mode("lch")
     .colors(amount)
     .map(color =>
@@ -55,25 +55,28 @@ function randRadialGradientGroup(bg: string, amount: number): string {
     .join(",")
 }
 
-function generateBackground(bg: string): React.CSSProperties {
-  const backgroundImage = CODE_BACKGROUND_CACHE.get(bg) || randRadialGradientGroup(bg, 4);
-  CODE_BACKGROUND_CACHE.set(bg, backgroundImage);
+function generateBackground([currentBg, nextBg]: string[]): React.CSSProperties {
+  const backgroundImage = CODE_BACKGROUND_CACHE.get(currentBg) || randRadialGradientGroup(currentBg, nextBg, 4);
+  CODE_BACKGROUND_CACHE.set(currentBg, backgroundImage);
   return {
-    backgroundColor: bg,
+    backgroundColor: currentBg,
     backgroundImage,
   }
 }
 
-function CodeBackground({codeInfo, onTransitionEnd}: CodeContainerOpt) {
-  return (<div className="code-background" style={generateBackground(codeInfo.bg)}>
-    <CodeContainer codeInfo={codeInfo} onTransitionEnd={onTransitionEnd}/>
+interface CodeBackgroundProps extends CodeContainerProps {
+  nextBg: string,
+}
+
+function CodeBackground({ codeInfo, nextBg, onTransitionEnd }: CodeBackgroundProps) {
+  return (<div className="code-background" style={generateBackground([codeInfo.bg, nextBg])}>
+    <CodeContainer codeInfo={codeInfo} onTransitionEnd={onTransitionEnd} />
   </div>)
 }
 
 function DrawRoot() {
-  const [[prev, current], setNext] = useState([-1, 0]);
-  const total = allCodes.length;
-  const [doFade, setDoFade] = useState(true);
+  const [idx, setIndex] = useState(0);
+  const [doFade, setDoFade] = useState(false);
 
   const onTransitionEnd = () => {
     setDoFade(false);
@@ -81,32 +84,20 @@ function DrawRoot() {
 
   useEffect(() => {
     setTimeout(() => {
-      if (current == total - 1) {
-        setNext([total - 1, 0])
-      } else {
-        setNext([current, current + 1])
-      }
-
+      idx == allCodes.length - 1 ? setIndex(0) : setIndex(idx + 1)
       setDoFade(true)
     }, 10000)
-  }, [current])
+  }, [idx])
 
-  const prevCodes = allCodes[prev];
-  if (prevCodes && doFade) {
-    return (<CodeBackground codeInfo={prevCodes} onTransitionEnd={onTransitionEnd}/>)
-  }
-
-  const currentCodes = allCodes[current];
-  return (
-    <CodeBackground codeInfo={currentCodes} />
-  )
-
+  return (doFade
+    ? <CodeBackground codeInfo={allCodes[idx - 1 > 0 ? idx - 1 : 0]} nextBg={allCodes[idx].bg} onTransitionEnd={onTransitionEnd} />
+    : <CodeBackground codeInfo={allCodes[idx]} nextBg={allCodes[idx + 1 == allCodes.length ? 0 : idx + 1].bg} />)
 }
 
 function App() {
-  return <div className='draw-root'>
+  return (<div className='draw-root'>
     <DrawRoot />
-  </div>
+  </div>)
 }
 
 export default App
