@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import allCodes, { CodeInfo } from "hello-codes"
 import "./index.css"
+import chroma from "chroma-js";
 
 const CODE_BACKGROUND_CACHE = new Map();
 
@@ -38,23 +39,22 @@ function CodeContainer({ codeInfo, onTransitionEnd }: CodeContainerOpt) {
   )
 }
 
-function randomRadialGradient() {
-  const randP = () => {
+function randRadialGradientGroup(bg: string, amount: number): string {
+  const rand = () => {
     return Math.floor(Math.random() * 100);
   }
-  const randH = () => {
-    return Math.floor(Math.random() * 360);
-  }
-
-  return `radial-gradient(at ${randP()}% ${randP()}%, hsla(${randH()}, ${randP()}%, ${randP()}%, 1) 0px, transparent 50%)`
-}
-
-function randRadialGradientGroup(amount: number): string {
-  return [...Array(amount).keys()].map(_ => randomRadialGradient()).join(",");
+  return chroma
+    .scale([chroma(bg).darken(2), chroma.random()])
+    .mode("lch")
+    .colors(amount)
+    .map(color =>
+      `radial-gradient(at ${rand()}% ${rand()}%, ${color} 0px, transparent 50%)`
+    )
+    .join(",")
 }
 
 function generateBackground(bg: string): React.CSSProperties {
-  const backgroundImage = CODE_BACKGROUND_CACHE.get(bg) || randRadialGradientGroup(7);
+  const backgroundImage = CODE_BACKGROUND_CACHE.get(bg) || randRadialGradientGroup(bg, 4);
   CODE_BACKGROUND_CACHE.set(bg, backgroundImage);
   return {
     backgroundColor: bg,

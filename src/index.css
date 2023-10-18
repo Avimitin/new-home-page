@@ -34,7 +34,7 @@ pre {
 
   -webkit-transition: background-image 1s linear;
   -ms-transition: background-image 1s linear;
-  transition: background-image 1s linear;
+  transition: background 1s linear;
 
   background-size: 300% 100%;
 
